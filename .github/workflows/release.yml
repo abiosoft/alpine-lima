@@ -45,6 +45,11 @@ jobs:
           make iso EDITION=clmp ARCH=x86_64
           make iso EDITION=clmp ARCH=aarch64
 
+      - name: Build the containerd edition
+        run: |
+          make iso EDITION=clmc ARCH=x86_64
+          make iso EDITION=clmc ARCH=aarch64
+
       - name: Create release
         if: github.event_name != 'pull_request'
         env:
