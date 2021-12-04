@@ -158,6 +158,13 @@ if [ "${LIMA_INSTALL_DOCKER}" == "true" ]; then
     echo docker >>"$tmp"/etc/apk/world
 fi
 
+if [ "${LIMA_INSTALL_CONTAINERD}" == "true" ]; then
+    echo libseccomp >>"$tmp"/etc/apk/world
+    echo runc >>"$tmp"/etc/apk/world
+    echo containerd >>"$tmp"/etc/apk/world
+    echo containerd-openrc >>"$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_PODMAN}" == "true" ]; then
     echo libseccomp >>"$tmp"/etc/apk/world
     echo runc >>"$tmp"/etc/apk/world
