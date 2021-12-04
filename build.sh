@@ -28,7 +28,7 @@ docker run --rm \
     -e "LIMA_REPO_VERSION=${REPO_VERSION}" \
     -e "LIMA_BUILD_ID=${BUILD_ID}" \
     -e "LIMA_VARIANT_ID=${EDITION}" \
-    "mkimage:${ALPINE_VERSION}-${ARCH}" \
+    "localhost/mkimage:${ALPINE_VERSION}-${ARCH}" \
     --tag "${TAG}" \
     --outdir /iso \
     --arch "${ARCH}" \

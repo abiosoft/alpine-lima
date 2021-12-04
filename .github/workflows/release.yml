@@ -10,7 +10,7 @@ on:
   pull_request:
 
 env:
-  ALPINE_VERSION: 3.14.3
+  ALPINE_VERSION: 3.15.0
   DOCKER_BUILDKIT: 1
 
 jobs:
@@ -34,10 +34,15 @@ jobs:
           make mkimage ARCH=x86_64
           make mkimage ARCH=aarch64
 
-      - name: Build the std edition
+      - name: Build the docker edition
         run: |
-          make iso EDITION=clm ARCH=x86_64
-          make iso EDITION=clm ARCH=aarch64
+          make iso EDITION=clmd ARCH=x86_64
+          make iso EDITION=clmd ARCH=aarch64
+
+      - name: Build the podman edition
+        run: |
+          make iso EDITION=clmp ARCH=x86_64
+          make iso EDITION=clmp ARCH=aarch64
 
       - name: Create release
         if: github.event_name != 'pull_request'
@@ -48,8 +53,12 @@ jobs:
           tag="${GITHUB_REF##*/}"
 
           hub release create
-          -a iso/alpine-lima-clm-${ALPINE_VERSION}-aarch64.iso
-          -a iso/alpine-lima-clm-${ALPINE_VERSION}-aarch64.iso.sha512sum
-          -a iso/alpine-lima-clm-${ALPINE_VERSION}-x86_64.iso
-          -a iso/alpine-lima-clm-${ALPINE_VERSION}-x86_64.iso.sha512sum
+          -a iso/alpine-lima-clmp-${ALPINE_VERSION}-aarch64.iso
+          -a iso/alpine-lima-clmp-${ALPINE_VERSION}-aarch64.iso.sha512sum
+          -a iso/alpine-lima-clmp-${ALPINE_VERSION}-x86_64.iso
+          -a iso/alpine-lima-clmp-${ALPINE_VERSION}-x86_64.iso.sha512sum
+          -a iso/alpine-lima-clmd-${ALPINE_VERSION}-aarch64.iso
+          -a iso/alpine-lima-clmd-${ALPINE_VERSION}-aarch64.iso.sha512sum
+          -a iso/alpine-lima-clmd-${ALPINE_VERSION}-x86_64.iso
+          -a iso/alpine-lima-clmd-${ALPINE_VERSION}-x86_64.iso.sha512sum
           -m "${tag}" --draft "${tag}"

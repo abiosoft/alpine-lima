@@ -158,6 +158,16 @@ if [ "${LIMA_INSTALL_DOCKER}" == "true" ]; then
     echo docker >>"$tmp"/etc/apk/world
 fi
 
+if [ "${LIMA_INSTALL_PODMAN}" == "true" ]; then
+    echo libseccomp >>"$tmp"/etc/apk/world
+    echo runc >>"$tmp"/etc/apk/world
+    echo conmon >>"$tmp"/etc/apk/world
+    echo cni-plugins >>"$tmp"/etc/apk/world
+    echo slirp4netns >>"$tmp"/etc/apk/world
+    echo fuse-overlayfs >>"$tmp"/etc/apk/world
+    echo podman >>"$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then
     echo "qemu-aarch64" >>"$tmp"/etc/apk/world
     echo "qemu-x86_64" >>"$tmp"/etc/apk/world

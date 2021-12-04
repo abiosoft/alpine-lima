@@ -23,7 +23,7 @@ NERDCTL_VERSION=0.14.0
 mkimage:
 	cd src/aports && git fetch --tags && git checkout $(GIT_TAG)
 	docker build \
-		--tag mkimage:$(ALPINE_VERSION)-$(ARCH) \
+		--tag localhost/mkimage:$(ALPINE_VERSION)-$(ARCH) \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
 		--platform linux/$(ARCH_ALIAS) \
 		.

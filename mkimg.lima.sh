@@ -24,6 +24,10 @@ profile_lima() {
             apks="$apks libseccomp runc containerd tini-static device-mapper-libs"
             apks="$apks docker-engine docker-openrc docker-cli docker"
         fi
+        if [ "${LIMA_INSTALL_PODMAN}" == "true" ]; then
+            apks="$apks conmon cni-plugins runc slirp4netns fuse-overlayfs libseccomp"
+            apks="$apks podman"
+        fi
         if [ "${LIMA_INSTALL_LIMA_INIT}" == "true" ]; then
             apks="$apks e2fsprogs lsblk sfdisk shadow sudo udev"
         fi
