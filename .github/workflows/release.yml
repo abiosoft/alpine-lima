@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "colima-v*"
+      - "podman-colima"
     tags:
       - "v*"
       - "test-v*"
