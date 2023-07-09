@@ -173,6 +173,12 @@ if [ "${LIMA_INSTALL_DOCKER}" == "true" ]; then
     mkdir -p "${tmp}/etc/init.d/"
 fi
 
+# /proc/sys/fs/binfmt_misc must exist for /etc/init.d/procfs to load
+# the binfmt-misc kernel module, which will then mount the filesystem.
+# This is needed for Rosetta to register.
+mkdir -p "${tmp}/proc/sys/fs/binfmt_misc"
+rc_add procfs default
+
 if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then
     # install qemu-aarch64 on x86_64 and vice versa
     OTHERARCH=aarch64
@@ -213,8 +219,8 @@ if [ "${LIMA_INSTALL_CA_CERTIFICATES}" == "true" ]; then
     echo "ca-certificates" >>"$tmp"/etc/apk/world
 fi
 
-if [ "${LIMA_INSTALL_CNI_PLUGINS}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
-    echo "cni-plugins" >>"$tmp"/etc/apk/world
+if [ "${LIMA_INSTALL_CNI_PLUGINS}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL_FULL}" == "true" ]; then
+    echo "cni-plugins" >> "$tmp"/etc/apk/world
 fi
 
 if [ "${LIMA_INSTALL_CNI_PLUGIN_FLANNEL}" == "true" ]; then
@@ -246,13 +252,13 @@ if [ "${LIMA_INSTALL_LOGROTATE}" == "true" ]; then
     echo "logrotate" >>"$tmp"/etc/apk/world
 fi
 
-if [ "${LIMA_INSTALL_IPTABLES}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
-    echo "iptables ip6tables" >>"$tmp"/etc/apk/world
+if [ "${LIMA_INSTALL_IPTABLES}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL_FULL}" == "true" ]; then
+    echo "iptables ip6tables" >> "$tmp"/etc/apk/world
 fi
 
-if [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
+if [ "${LIMA_INSTALL_NERDCTL_FULL}" == "true" ]; then
     mkdir -p "${tmp}/nerdctl"
-    tar xz -C "${tmp}/nerdctl" -f /home/build/nerdctl.tar.gz
+    tar xz -C "${tmp}/nerdctl" -f /home/build/nerdctl-full.tar.gz
 
     mkdir -p "${tmp}/usr/local/bin/"
     for bin in buildctl buildkitd nerdctl; do
@@ -302,6 +308,7 @@ mkdir -p "${tmp}/usr/share/colima"
 cp /home/build/ubuntu-layer.tar.gz "${tmp}/usr/share/colima"
 
 mkdir -p "${tmp}/etc"
+mkdir -p "${tmp}/proc"
 mkdir -p "${tmp}/usr"
 
-tar -c -C "$tmp" etc usr | gzip -9n >$HOSTNAME.apkovl.tar.gz
+tar -c -C "$tmp" etc proc usr | gzip -9n > $HOSTNAME.apkovl.tar.gz
