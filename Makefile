@@ -1,4 +1,4 @@
-ALPINE_VERSION ?= 3.18.0
+ALPINE_VERSION ?= 3.18.3
 REPO_VERSION ?= $(shell echo "$(ALPINE_VERSION)" | sed -E 's/^([0-9]+\.[0-9]+).*/v\1/')
 GIT_TAG ?= $(shell echo "v$(ALPINE_VERSION)" | sed 's/^vedge$$/origin\/master/')
 BUILD_ID ?= $(shell git describe --tags)
@@ -21,7 +21,7 @@ ARCH_ALIAS_x86_64 = amd64
 ARCH_ALIAS_aarch64 = arm64
 ARCH_ALIAS = $(shell echo "$(ARCH_ALIAS_$(ARCH))")
 
-NERDCTL_VERSION=1.3.1
+NERDCTL_VERSION=1.6.0
 QEMU_VERSION=v7.0.0
 CRI_DOCKERD_VERSION=0.3.0
 CRI_DOCKERD_ORG=Mirantis
